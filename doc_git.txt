@@ -8,3 +8,5 @@ git push -u origin main
 
 cuando hacemos cambios sobre el repositorio
 git add .
+git commit -m'Parches'
+git push
