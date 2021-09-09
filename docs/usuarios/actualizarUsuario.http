@@ -1,9 +1,9 @@
-PUT http://localhost:5000/usuarios/2
+PUT http://localhost:5000/registro/1
 Content-Type: application/json
 
 
 {
-    "nombres": "yefferson",
-    "email": "yeferson-2011@hotmail.com",
-    "contrasena": "87654321"
+    "Nombre": "Jheisson ",
+    "Correo": "jheison24@gmail.com",
+    "Contraseña": "987456"
 }

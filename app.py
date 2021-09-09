@@ -1,55 +1,110 @@
-from flask import Flask,jsonify, request
+from flask import Flask, jsonify, request
 import mysql.connector
-            
+
 db = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='12345678',
-    port=3306,
-    database='registro1',
+    host = 'localhost',
+    user = 'root',
+    password ='12345678',
+    database = 'registro',
+    port =3306
+    
 )
 
-
-app = Flask (__name__)
-
-#@ definicion de decorador 
+app = Flask(__name__)
 @app.route('/')
 def index():
-    return'Hola mundo'
+    return 'Hello world'
 
 
 
-@app.route('/contacto')
-def contacto():
-    return'en la pagina de contacto'
-
-@app.post('/usuarios')
-def crearUsuarios():
+@app.post('/registro')
+def crearpersonal_data():
+    #request  => envia el cliente
+    #response => lo que le voy a responder
     datos = request.json
+    
+    print(datos)
+
     cursor = db.cursor()
-    cursor = db.execute('''INSERT INTO usuario(Nombre, Correo, Contraseña)
-    VALUE(%s,%s,%s)''',(
+
+    cursor.execute('''INSERT INTO usuario(Nombre, Correo, Contraseña)
+        VALUE(%s, %s, %s)''', (
         datos['Nombre'],
         datos['Correo'],
-        datos['contraseña']
+        datos['Contraseña'],
     ))
+
+    db.commit()
+    
+    return jsonify({
+
+        "mensaje": "usuario alamcenado correctamente"
+    })
+
+
+@app.get('/registro')
+def listaUsuarios():
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute('select * from usuario')
+
+    registros = cursor.fetchall()
+
+    return jsonify(registros)
+
+
+
+
+@app.put('/registro/<id>')
+def actualizarUsuario(id):
+
+    datos=request.json
+
+    cursor = db.cursor()
+
+
+    cursor.execute('''UPDATE usuario set Nombre=%s, 
+        Correo=%s, Contraseña=%s where id=%s''',(
+            datos['Nombre'],
+            datos['Correo'],
+            datos['Contraseña'],
+            id
+        ))
+    
     db.commit()
 
     return jsonify({
-        "mensajes": "usuario almacendo" 
+
+        "mensaje": "usuario alamcenado correctamente"
+    })  
+    
+    
+@app.delete('/registro/<id>')
+def eliminarUsuario(id):
+
+
+    cursor = db.cursor()
+    cursor.execute('DELETE FROM usuario where id=%s',(id,))
+
+
+    db.commit()
+
+    return jsonify({
+
+        "mensaje": "usuario eliminado correctamente"
     })
 
-@app.get('/encuestas')
-def obtenerEncuestas():
-    return jsonify([
-        {
-            "Id":1,
-            "name": "Encuesta de sastisfacion de clientes"
-        },
-        {
-            "Id":2,
-            "name": "Encuestas de satisfaccion de empleados"
-        }
-    ])
+@app.get('/registro/<id>')
+def unUsuario(id):
+    cursor = db.cursor()
+    cursor.execute('DELETE FROM usuario where id=%s',(id,))
 
+
+    db.commit()
+
+    return jsonify({
+
+        "mensaje": "usuario eliminado correctamente"
+    })
+    
 app.run(debug=True)

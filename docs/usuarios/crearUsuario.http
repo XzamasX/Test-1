@@ -1,8 +1,8 @@
-POST http://localhost:5000/usuarios
+POST http://localhost:5000/registro
 Content-Type: application/json
 
 {
-    "nombres": "yefferson",
-    "email": "yeferson-2011@hotmail.com",
-    "contrasena": "12345678"
+    "Nombre": "David",
+    "Correo": "david24@gmail.com",
+    "Contraseña": "12345678"
 }

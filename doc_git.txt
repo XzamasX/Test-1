@@ -1,0 +1,10 @@
+Cuando el repositorio es nuev (http://git-scm.com)
+git init
+git add .
+git commit -m 'cambios que realice'
+git branch -M main
+git remote add origin ruta_repostorio
+git push -u origin main
+
+cuando hacemos cambios sobre el repositorio
+git add .
